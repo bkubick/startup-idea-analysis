@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from enum import Enum
+import time
 import typing
 
 from bs4 import BeautifulSoup
@@ -32,7 +33,7 @@ class Location(Enum):
 class BuiltInScraper:
     """ Scrapes companies from builtin.com.
 
-        Attributes:
+        Private Attributes:
             _companies_base_url (str): The base url to fetch companies from.
     """
     _companies_base_url: str = 'https://builtin.com/companies'
@@ -194,6 +195,8 @@ class BuiltInScraper:
         while len(companies) < max_companies if max_companies else True:
             try:
                 WebDriverWait(driver, timeout).until(lambda x: x.find_element(By.CLASS_NAME, 'company-card'))
+                # TODO: Need to figure out how to wait for the page to load before continuing
+                time.sleep(2)
             except TimeoutException:
                 print("Timed out waiting for page to load")
             finally:
